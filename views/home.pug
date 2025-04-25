@@ -2,8 +2,8 @@ extends layout
 
 block content
   .home-intro
-    h2 Avant : version non-optimisée
-    p Cette démo illustre un site non-green : pages lourdes, images non optimisées, bande passante surchargée.
+    h2 Après : version optimisée
+    p Cette démo illustre un site optimisé avec des images légères, une bande passante réduite et une empreinte carbone numérique plus faible.
 
   .media-grid
     each img in ['impact_chart.webp', 'img_greenit_app_it.webp', 'markus-spiske-_kB9NKpErH4-unsplash.webp']
@@ -37,11 +37,18 @@ block content
         source(src="/videos/1085656-uhd_3840_2160_25fps.webm" type="video/webm")
         | Votre navigateur ne supporte pas la balise vidéo.
 
-  .eco-paragraph
-    h3 Pourquoi ce “Avant” ?
+    .eco-paragraph
+    h3 Pourquoi cette optimisation ?
     p
-      | Nous montrons l’importance de l’optimisation Web pour réduire l’empreinte carbone numérique.
-      | Cette version charge tout à plein régime.
+      | Nous montrons comment les bonnes pratiques d'optimisation Web contribuent à la réduction de l'empreinte carbone numérique.
+      | Cette version charge des ressources de manière plus efficace pour un impact environnemental réduit.
+      br
+      h4 Comment avons-nous optimisé le site ?
+      p
+        | Nous avons compressé les images et les vidéos, utilisé le lazy loading pour les médias, et mis en cache les ressources pour éviter de les recharger inutilement.
+        | Les vidéos sont limitées à une durée maximale pour éviter des chargements trop longs, et les images sont converties au format WebP, plus léger.
+        | Nous avons également supprimé des éléments comme la pluie de fleurs et la vidéo en arrière-plan pour alléger la page.
+
 
   .accordion-container
     each item, idx in accordionData
