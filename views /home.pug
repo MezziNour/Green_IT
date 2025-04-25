@@ -1,0 +1,50 @@
+extends layout
+
+
+block content
+  .home-intro
+    h2 Avant : version non-optimisée
+    p Cette démo illustre un site non-green : pages lourdes, images non optimisées, bande passante surchargée.
+
+  .media-grid
+    each img in ['impact_chart.png','img_greenit_app_it.jpg','markus-spiske-_kB9NKpErH4-unsplash.jpg']
+      .media-item
+        img(src=`/images/${img}`, alt=img)
+
+  .media-grid
+    .media-item
+      video.video-player(
+        autoplay
+        muted
+        loop
+        playsinline
+        width="360"
+      )
+        source(src="/videos/3130284-uhd_3840_2160_30fps.mp4" type="video/mp4")
+        | Votre navigateur ne supporte pas la balise vidéo.
+    .media-item
+      video.video-player(
+        autoplay
+        muted
+        loop
+        playsinline
+        width="360"
+      )
+        source(src="/videos/1085656-uhd_3840_2160_25fps.mp4" type="video/mp4")
+        | Votre navigateur ne supporte pas la balise vidéo.
+
+  .eco-paragraph
+    h3 Pourquoi ce “Avant” ?
+    p
+      | Nous montrons l’importance de l’optimisation Web pour réduire l’empreinte carbone numérique.
+      | Cette version charge tout à plein régime.
+
+  .accordion-container
+    each item, idx in accordionData
+      .accordion-item
+        button.accordion-toggle(type='button', data-index=idx)= item.title
+        .accordion-content.hidden
+          p= item.text
+
+  .home-footer
+    p Pour découvrir les fonctionnalités, connectez-vous via les onglets en haut.

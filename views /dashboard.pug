@@ -1,0 +1,59 @@
+extends layout
+
+
+block content
+  .dashboard-header
+    h2.panel-title Vos listes de tâches
+    button#open-new-list.btn-create(type="button") ＋ Nouvelle liste
+
+  .cards-container
+    each list in lists
+      .card-container(data-card-id=list.id)
+        a.card(href=`/list/${list.id}`)
+          if list.image
+            .card-image
+              img(src=`/uploads/${list.image}`, alt=list.name)
+          .card-body
+            h3.card-title= list.name
+            - const total = list.total || 0
+            - const done  = list.doneCount || 0
+            if total > 0
+              - const percent = Math.round((done/total)*100)
+              .progress-container
+                .progress-bar-filled(style={width: percent + '%'})
+              span.progress-text #{percent}% complété
+            else
+              span.progress-text Aucune tâche
+        form.delete-form(method="POST", action=`/dashboard/${list.id}/delete`)
+           button(type="submit", class="btn-delete", data-list-name=list.name) ×
+
+
+  .modal.hidden(id="new-list-modal")
+    .modal-overlay
+    .modal-content
+      button.modal-close(type="button", id="close-new-list") ×
+      h2 Créer une nouvelle liste
+      form(method="POST", action="/dashboard/create", enctype="multipart/form-data")
+        .form-group
+          label(for="name") Nom
+          input#name(type="text", name="name", required)
+        .form-group
+          label(for="image") Image (optionnelle)
+          input(type="file", name="image", accept="image/*")
+        .form-actions
+          button(type="submit") Créer
+
+  //- Modale pour suppression d'une liste
+  #confirm-modal.hidden
+    .modal-overlay
+    .modal-content
+      button.modal-close(type="button", id="cancel-delete") ×
+      h2#confirm-title Supprimer cette liste ?
+      p#confirm-text Cette action est irréversible.
+      form(method="POST", id="confirm-form")
+        .form-actions
+          button(type="submit", class="btn-confirm") Oui, supprimer
+          button(type="button", id="cancel-button") Annuler
+
+block scripts
+  script(src="/javascripts/dashboard.js")

@@ -1,0 +1,24 @@
+extends layout
+
+
+block content
+  .profile-container
+    h2 Profil de #{user.username}
+
+    .avatar-section
+      if user.profile_image
+        img.avatar(src=`/uploads/profiles/${user.profile_image}`, alt='Avatar')
+      else
+        img.avatar(src='/images/10260479-icone-de-profil-avatar-par-defaut-de-l-utilisateur-des-medias-sociaux-dans-le-style-clipart-vectoriel.jpg', alt='Avatar par défaut')
+      form(method='POST', action='/profile/upload-avatar', enctype='multipart/form-data')
+        input(type='file', name='avatar', accept='image/*', required)
+        button(type='submit') Mettre à jour la photo
+
+    h3 Vous avez créé #{lists.length} liste(s)
+    .lists-stats
+      each list in lists
+        .list-card
+          a(href=`/list/${list.id}`)= list.name
+          .progress-bar
+            .progress-filled(style=`width: ${list.percent}%`)
+          span.progress-text #{list.percent}% complété

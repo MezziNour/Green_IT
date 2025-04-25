@@ -1,0 +1,35 @@
+extends layout
+
+
+block content
+  .list-banner
+    if list.image
+      img.list-cover(src=`/uploads/${list.image}`, alt=list.name)
+    h2.list-title= list.name
+
+  form#add-item(
+    method='POST'
+    action=`/list/${list.id}/item`
+    enctype='multipart/form-data'
+  )
+    input.text-input(type='text', name='text', required, placeholder='Nouvel item …')
+    input.file-input(type='file', name='image', accept='image/*')
+    button.btn-primary(type='submit') Ajouter
+
+  ul.item-list
+    each item in items
+      li.item
+        .item-main
+          form.toggle-form(method='POST', action=`/list/${list.id}/item/${item.id}/toggle`)
+            input.toggle-checkbox(
+              type='checkbox'
+              onchange='this.form.submit()'
+              checked=(item.done == 1)
+            )
+          span.item-text(
+            style=(item.done == 1 ? 'text-decoration: line-through; opacity: 0.6;' : '')
+          )= item.text
+          form.delete-form(method='POST', action=`/list/${list.id}/item/${item.id}/delete`)
+            button.delete-button(type='submit') ×
+        if item.image
+          img.item-image(src=`/uploads/items/${item.image}`, alt='Illustration')

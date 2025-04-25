@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .auth-wrapper 
+    .auth-box
+      h2 Hello back !
+      if error
+        p.error= error
+      form(method='POST', action='/auth/login')
+        .row
+          label(for='username') Username:
+          input(type='text', name='username', required)
+        .row
+          label(for='password') Password:
+          input(type='password', name='password', required)
+        button(type='submit') Login
+      p
+        a(href='/auth/register') Register
