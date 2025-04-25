@@ -5,8 +5,6 @@ const itemModel = require("../models/item");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const sharp = require("sharp");
-
 
 router.use((req, res, next) => {
   if (!req.session.userId) return res.redirect("/");
@@ -41,31 +39,9 @@ router.get("/:id", async (req, res, next) => {
 router.post("/:id/item", uploadItem.single("image"), async (req, res, next) => {
   const listId = req.params.id;
   const { text } = req.body;
-  let image = null;
+  const image = req.file ? req.file.filename : null;
 
   try {
-    if (req.file) {
-      const ext = path.extname(req.file.originalname);
-      const baseName = Date.now().toString();
-      const originalPath = path.join(itemsDir, baseName + ext);
-      const webpFilename = baseName + ".webp";
-      const webpPath = path.join(itemsDir, webpFilename);
-
-      // Renommer temporairement l'image originale
-      fs.renameSync(req.file.path, originalPath);
-
-      // Conversion en .webp
-      await sharp(originalPath)
-        .resize(600)
-        .webp({ quality: 80 })
-        .toFile(webpPath);
-
-      // Supprimer l'image originale
-      fs.unlinkSync(originalPath);
-
-      image = webpFilename;
-    }
-
     await itemModel.createItem(text, image, listId);
     res.redirect(`/list/${listId}`);
   } catch (error) {
@@ -73,7 +49,6 @@ router.post("/:id/item", uploadItem.single("image"), async (req, res, next) => {
     res.status(500).send("Error adding item.");
   }
 });
-
 
 router.post("/:id/item/:itemId/toggle", async (req, res, next) => {
   const listId = req.params.id;

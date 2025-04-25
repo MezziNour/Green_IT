@@ -1,5 +1,6 @@
 extends layout
 
+
 block content
   .profile-container
     h2 Profil de #{user.username}
@@ -8,7 +9,7 @@ block content
       if user.profile_image
         img.avatar(src=`/uploads/profiles/${user.profile_image}`, alt='Avatar')
       else
-        img.avatar(src='/images/10260479-icone-de-profil-avatar-par-defaut-de-l-utilisateur-des-medias-sociaux-dans-le-style-clipart-vectoriel.jpg', alt='Avatar par défaut')
+        img.avatar(src='/images/10260479-icone-de-profil-avatar-par-defaut-de-l-utilisateur-des-medias-sociaux-dans-le-style-clipart-vectoriel.webp', alt='Avatar par défaut')
       form(method='POST', action='/profile/upload-avatar', enctype='multipart/form-data')
         input(type='file', name='avatar', accept='image/*', required)
         button(type='submit') Mettre à jour la photo

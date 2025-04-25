@@ -61,24 +61,4 @@ block content
   .home-footer
     p Pour découvrir les fonctionnalités, connectez-vous via les onglets en haut.
 
-  // Ajout du script pour arrêter la vidéo après un certain temps
-  script.
-    document.addEventListener('DOMContentLoaded', function() {
-      var video1 = document.getElementById('video1');
-      var video2 = document.getElementById('video2');
-      var maxDuration = 30; // Durée maximale en secondes avant d'arrêter la vidéo
-
-      // Arrêter la première vidéo après la durée maximale
-      video1.addEventListener('play', function() {
-        setTimeout(function() {
-          video1.pause();
-        }, maxDuration * 1000); // maxDuration en millisecondes
-      });
-
-      // Arrêter la deuxième vidéo après la durée maximale
-      video2.addEventListener('play', function() {
-        setTimeout(function() {
-          video2.pause();
-        }, maxDuration * 1000); // maxDuration en millisecondes
-      });
-    });
+  
