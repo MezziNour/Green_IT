@@ -8,25 +8,7 @@
     --delete-color: #e21309;
     --border-radius: 15px;
   }
-  
-/* FOND VIDÉO */
-  #video-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    z-index: -100;
-  }
-  
-  #fondVideo {
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-  }
-  
+
 /* GÉNÉRAL */
   * {
     box-sizing: border-box;
