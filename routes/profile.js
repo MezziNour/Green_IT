@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const sharp = require("sharp"); // Ajout de sharp
 const userModel = require("../models/user");
 const listModel = require("../models/list");
 const itemModel = require("../models/item");
@@ -46,10 +47,19 @@ router.post(
   async (req, res, next) => {
     try {
       if (req.file) {
-        await userModel.updateProfileImage(
-          req.session.userId,
-          req.file.filename
-        );
+        // Nom du fichier converti en WebP
+        const webpFileName = `user-${req.session.userId}.webp`;
+
+        // Conversion de l'image avec sharp
+        await sharp(req.file.path)
+          .webp() // Convertir en format WebP
+          .toFile(path.join(avatarDir, webpFileName));
+
+        // Supprimer le fichier original téléchargé
+        fs.unlinkSync(req.file.path);
+
+        // Mise à jour de l'image du profil dans la base de données
+        await userModel.updateProfileImage(req.session.userId, webpFileName);
       }
       res.redirect("/profile");
     } catch (err) {

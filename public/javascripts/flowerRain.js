@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     for (let i = 0; i < numberOfFlowers; i++) {
       const flower = document.createElement("img");
-      flower.src = "/images/flower.png"; 
+      flower.src = "/images/flower.webp"; 
       flower.classList.add("falling-flower");
   
       flower.style.left = Math.random() * 100 + "vw";
