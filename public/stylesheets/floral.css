@@ -876,23 +876,5 @@
 }
 
 
-/* Pluie de fleurs */
-.falling-flower {
-  position: fixed;
-  top: -50px;
-  width: 30px;
-  z-index: 99;
-  pointer-events: none;
-  opacity: 0.8;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
 
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
 
