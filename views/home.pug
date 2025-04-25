@@ -1,15 +1,14 @@
 extends layout
 
-
 block content
   .home-intro
     h2 Avant : version non-optimisée
     p Cette démo illustre un site non-green : pages lourdes, images non optimisées, bande passante surchargée.
 
   .media-grid
-    each img in ['impact_chart.png','img_greenit_app_it.jpg','markus-spiske-_kB9NKpErH4-unsplash.jpg']
+    each img in ['impact_chart.webp', 'img_greenit_app_it.webp', 'markus-spiske-_kB9NKpErH4-unsplash.webp']
       .media-item
-        img(src=`/images/${img}`, alt=img)
+        img(src=`/images/${img}`, alt=img loading="lazy")
 
   .media-grid
     .media-item
@@ -19,9 +18,12 @@ block content
         loop
         playsinline
         width="360"
+        loading="lazy"
+        id="video1"
       )
-        source(src="/videos/3130284-uhd_3840_2160_30fps.mp4" type="video/mp4")
+        source(src="/videos/3130284-uhd_3840_2160_30fps.webm" type="video/webm")
         | Votre navigateur ne supporte pas la balise vidéo.
+
     .media-item
       video.video-player(
         autoplay
@@ -29,8 +31,10 @@ block content
         loop
         playsinline
         width="360"
+        loading="lazy"
+        id="video2"
       )
-        source(src="/videos/1085656-uhd_3840_2160_25fps.mp4" type="video/mp4")
+        source(src="/videos/1085656-uhd_3840_2160_25fps.webm" type="video/webm")
         | Votre navigateur ne supporte pas la balise vidéo.
 
   .eco-paragraph
@@ -48,3 +52,25 @@ block content
 
   .home-footer
     p Pour découvrir les fonctionnalités, connectez-vous via les onglets en haut.
+
+  // Ajout du script pour arrêter la vidéo après un certain temps
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      var video1 = document.getElementById('video1');
+      var video2 = document.getElementById('video2');
+      var maxDuration = 30; // Durée maximale en secondes avant d'arrêter la vidéo
+
+      // Arrêter la première vidéo après la durée maximale
+      video1.addEventListener('play', function() {
+        setTimeout(function() {
+          video1.pause();
+        }, maxDuration * 1000); // maxDuration en millisecondes
+      });
+
+      // Arrêter la deuxième vidéo après la durée maximale
+      video2.addEventListener('play', function() {
+        setTimeout(function() {
+          video2.pause();
+        }, maxDuration * 1000); // maxDuration en millisecondes
+      });
+    });

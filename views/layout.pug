@@ -11,8 +11,8 @@ html(lang="fr")
 
   body
     div#video-container
-      video#fondVideo(autoplay loop muted playsinline)
-        source(src="/videos/flower.mp4" type="video/mp4")
+      video#fondVideo(autoplay muted playsinline)
+        source(src="/videos/flower.webm" type="video/webm")
 
     header.navbar
       .container
@@ -47,9 +47,35 @@ html(lang="fr")
 
     script.
       window.isLoggedIn = #{session.userId ? 'true' : 'false'};
-    
+
     script(src="https://unpkg.com/axios/dist/axios.min.js")
     script(src="/javascripts/main.js")
     script(src="/javascripts/flowerRain.js")
 
     block scripts
+
+    script.
+      // Chargement paresseux de la vidéo avec IntersectionObserver
+      const video = document.getElementById('fondVideo');
+      const videoSource = video.querySelector('source');
+
+      // IntersectionObserver pour charger la vidéo quand elle est visible à l'écran
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            videoSource.src = "/videos/flower.webm"; // Charger la vidéo
+            video.load(); // Charger la vidéo dans l'élément vidéo
+            observer.disconnect(); // Arrêter l'observation une fois que la vidéo est chargée
+          }
+        });
+      });
+
+      observer.observe(video);
+
+      // Temps de boucle maximum de la vidéo
+      const maxDuration = 30; // Durée maximale en secondes
+      video.addEventListener('loadedmetadata', () => {
+        setTimeout(() => {
+          video.pause();
+        }, maxDuration * 1000); // Pause après maxDuration secondes
+      });
