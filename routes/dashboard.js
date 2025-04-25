@@ -6,6 +6,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const db = require("../models/db");
+const sharp = require("sharp");
 
 router.use((req, res, next) => {
   if (!req.session.userId) return res.redirect("/");
@@ -59,9 +60,32 @@ router.get("/", async (req, res) => {
 
 router.post("/create", upload.single("image"), async (req, res) => {
   const { name } = req.body;
-  const image = req.file ? req.file.filename : null;
+  let image = null;
 
   try {
+    if (req.file) {
+      const ext = path.extname(req.file.originalname);
+      const baseName = Date.now().toString(); // nom unique de base
+      const originalPath = path.join(listsDir, baseName + ext); // emplacement temporaire
+      const webpFilename = baseName + ".webp";
+      const webpPath = path.join(listsDir, webpFilename);
+
+      // Renommer l'image originale temporairement
+      fs.renameSync(req.file.path, originalPath);
+
+      // Convertir en WebP
+      await sharp(originalPath)
+        .resize(600) // ajuste si besoin
+        .webp({ quality: 80 })
+        .toFile(webpPath);
+
+      // Supprimer l'image originale
+      fs.unlinkSync(originalPath);
+
+      // Enregistrer le nom de l'image webp
+      image = webpFilename;
+    }
+
     await listModel.createList(name, image, req.session.userId);
     res.redirect("/dashboard");
   } catch (error) {
@@ -69,6 +93,8 @@ router.post("/create", upload.single("image"), async (req, res) => {
     res.send("Error creating list.");
   }
 });
+
+
 
 router.post("/:id/delete", async (req, res) => {
   const listId = req.params.id;
